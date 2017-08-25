@@ -9,9 +9,9 @@ import (
 
 	"strconv"
 
-	"github.com/0xAX/notificator"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/djimenez/iconv-go"
+	"github.com/gssdromen/notificator"
 )
 
 func main() {
@@ -59,7 +59,8 @@ func main() {
 					fmt.Println("==============")
 					fmt.Println(title)
 					fmt.Println(storeNumber)
-					go notify.Push(title, storeNumber, "", notificator.UR_NORMAL)
+					go notify.Push(title, storeNumber, 5, "default", PS4PageURL+strconv.Itoa(index), "", notificator.UR_NORMAL)
+
 				}
 			}
 		})
