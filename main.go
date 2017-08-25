@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 
 	"strconv"
 
@@ -23,6 +25,10 @@ func main() {
 		AppName:     "新亚电玩",
 	})
 	index := 1
+
+	// _ = getDocument(PS4PageURL + strconv.Itoa(1))
+	// _ = getDocument(PS4PageURL + strconv.Itoa(15))
+	// _ = getDocument(PS4PageURL + strconv.Itoa(20))
 
 	for ; ; index++ {
 		fmt.Println("请求第" + strconv.Itoa(index) + "页")
@@ -50,35 +56,40 @@ func main() {
 						storeNumber = "暂无数据，可能是抽奖的"
 					}
 
+					fmt.Println("==============")
+					fmt.Println(title)
+					fmt.Println(storeNumber)
 					go notify.Push(title, storeNumber, "", notificator.UR_NORMAL)
 				}
 			}
 		})
+		time.Sleep(1 * time.Second)
 	}
 }
 
 func getDocument(url string) *goquery.Document {
 	res, err := http.Get(url)
 	if err != nil {
-		// handle error
+		fmt.Print("请求出错")
 		fmt.Println(err.Error())
+		panic(err)
 	}
 	defer res.Body.Close()
-
 	// Convert the designated charset HTML to utf-8 encoded HTML.
 	// `charset` being one of the charsets known by the iconv package.
-	utfBody, err := iconv.NewReader(res.Body, "gbk", "utf-8")
-	if err != nil {
-		// handler error
-		fmt.Println(err.Error())
-	}
+
+	body, _ := ioutil.ReadAll(res.Body)
+	rawHTMLString := string(body)
+	convertedHTMLString, _ := iconv.ConvertString(rawHTMLString, "gbk", "utf-8")
 
 	// use utfBody using goquery
-	doc, err := goquery.NewDocumentFromReader(utfBody)
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(convertedHTMLString))
 	if err != nil {
 		// handler error
+		fmt.Print("解析出错")
 		fmt.Println(err.Error())
+		panic(err)
 	}
-	// use doc...
+
 	return doc
 }
