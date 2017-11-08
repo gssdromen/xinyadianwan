@@ -50,17 +50,19 @@ func main() {
 				name = strings.TrimSpace(name)
 				if strings.HasPrefix(name, n) {
 					title := item.Find("h3").First().Text()
-					storeNumber := item.Find(".price").First().Text()
+					store := item.Find(".price").First().Text()
+					storeNumber := 0
 
-					if storeNumber == "" {
-						storeNumber = "暂无数据，可能是抽奖的"
+					if store != "" {
+						storeNumber, _ = strconv.Atoi(strings.Split(store, "：")[1])
 					}
 
 					fmt.Println("==============")
 					fmt.Println(title)
 					fmt.Println(storeNumber)
-					go notify.Push(title, storeNumber, 5, "default", PS4PageURL+strconv.Itoa(index), "", notificator.UR_NORMAL)
-
+					if storeNumber > 0 {
+						go notify.Push(title, store, 5, "default", PS4PageURL+strconv.Itoa(index), "", notificator.UR_NORMAL)
+					}
 				}
 			}
 		})
