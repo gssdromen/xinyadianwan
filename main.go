@@ -25,6 +25,7 @@ func main() {
 		AppName:     "新亚电玩",
 	})
 	index := 1
+	hasGameAvailable := false
 
 	// _ = getDocument(PS4PageURL + strconv.Itoa(1))
 	// _ = getDocument(PS4PageURL + strconv.Itoa(15))
@@ -61,12 +62,17 @@ func main() {
 					fmt.Println(title)
 					fmt.Println(storeNumber)
 					if storeNumber > 0 {
+						hasGameAvailable = true
 						go notify.Push(title, store, 5, "default", PS4PageURL+strconv.Itoa(index), "", notificator.UR_NORMAL)
 					}
 				}
 			}
 		})
 		time.Sleep(1 * time.Second)
+	}
+	// 如果一个可用的游戏都没有,显示一个提示
+	if hasGameAvailable == false {
+		notify.Push("很遗憾!", "", 3, "default", "", "", notificator.UR_NORMAL)
 	}
 }
 
