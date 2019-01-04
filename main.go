@@ -20,7 +20,7 @@ func main() {
 	var PS4PageURL = "http://www.xinyadianwan.com/bbs/exchangeps4/index.php?page_c=1&search_name=&gametype=&gamelang=&page="
 
 	var targetGameNames []string
-	targetGameNames = []string{"深夜", "尼尔机械部队中文版", "进击的巨人", "最终幻想15中文版", "心理测量者", "高达VS", "女神异闻录5中", "SD高达G世纪", "丧尸围城", "怪物猎人", "洛克人遗产"}
+	targetGameNames = []string{"战神", "深夜", "尼尔机械部队中文版", "进击的巨人", "最终幻想15中文版", "心理测量者", "高达VS", "女神异闻录5中", "SD高达G世纪", "丧尸围城", "怪物猎人", "洛克人遗产", "如龙"}
 
 	var notify *notificator.Notificator = notificator.New(notificator.Options{
 		DefaultIcon: "icon/default.png",
